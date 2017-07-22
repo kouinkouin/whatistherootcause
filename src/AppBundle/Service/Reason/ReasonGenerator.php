@@ -2,18 +2,27 @@
 
 namespace AppBundle\Service\Reason;
 
+use AppBundle\Entity\Cause;
+use Doctrine\ORM\EntityManagerInterface;
+
 class ReasonGenerator
 {
-    private $reasons = [
-        'A beer falls on the server',
-        'Bees in the server room',
-        'Candies were missed',
-    ];
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
 
     public function getRandomReason(): string
     {
-        $a = array_rand($this->reasons, 1);
-
-        return $this->reasons[$a];
+        $causeRepository = $this->em->getRepository(Cause::class);
+        if ($cause = $causeRepository->findOneRandomly()) {
+            return $cause->getSentence();
+        }
+        return 'There is not cause';
     }
 }
