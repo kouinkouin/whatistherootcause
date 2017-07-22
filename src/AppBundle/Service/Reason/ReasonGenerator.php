@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Services\Reason;
+namespace AppBundle\Service\Reason;
 
 class ReasonGenerator
 {
